@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>
+    <%= user.name %> Profile
+  </title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="w-full h-screen bg-zinc-900">
+
+  <!-- Profile Section -->
+  <div class="max-w-3xl mx-auto p-8">
+    <div class="bg-zinc-800 shadow-md rounded-lg p-6">
+      <div class="flex items-center space-x-6">
+        <!-- Profile Picture -->
+        <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg" alt="Profile Picture"
+          class="w-24 h-24 rounded-full" id="profilePicture">
+
+        <!-- User Details -->
+        <div>
+          <h2 class="text-2xl font-semibold text-gray-100">
+            <%= user.name %>
+          </h2>
+          <p class="text-gray-400">
+            <%= user.email %>
+          </p>
+          <p class="mt-2 text-gray-200">
+            <%= user.about %>
+          </p>
+
+          <!-- Edit Profile and Change Profile Picture Buttons -->
+          <div class="mt-4 space-x-4">
+            <button onclick="toggleEditProfileForm()"
+              class="px-4 py-2 bg-yellow-700 text-white rounded-lg shadow hover:bg-yellow-900 transition">
+              Edit Profile Details
+            </button>
+            <button onclick="toggleChangeProfilePicForm()"
+              class="px-4 py-2 bg-blue-500 text-white rounded-lg shadow hover:bg-blue-700 transition">
+              Change Profile Picture
+            </button>
+            <form action="/logout" class="inline-block">
+              <button onclick="toggleChangeProfilePicForm()"
+                class="px-4 py-2 bg-red-500 text-white rounded-lg shadow hover:bg-red-700 transition">
+                Logout
+              </button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <!-- Edit Profile Form (Hidden by default) -->
+      <form action="/profile/update/<%= user._id %>" method="post" id="editProfileForm"
+        class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
+        <label class="block text-gray-700 font-semibold mb-2">Name:</label>
+        <input type="text" name="name" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
+          value="<%= user.name %>">
+
+        <label class="block text-gray-700 font-semibold mb-2">About Me:</label>
+        <textarea name="about" rows="3" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
+          placeholder="Tell something about yourself">Web Developer & Designer with a passion for building user-centric solutions.</textarea>
+
+        <button type="submit"
+          class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Save
+          Changes</button>
+      </form>
+
+      <!-- Change Profile Picture Form (Hidden by default) -->
+      <form action="/change-profile-picture" method="post" enctype="multipart/form-data" id="changeProfilePicForm"
+        class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
+        <label class="block text-gray-700 font-semibold mb-2">Upload New Profile Picture:</label>
+        <input type="file" name="profilePicture" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 text-white">
+
+        <button type="submit"
+          class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Update
+          Picture</button>
+      </form>
+    </div>
+
+    <!-- New Todo Button and Form -->
+    <div class="mt-6">
+      <button id="newTodoBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition"
+        onclick="toggleTodoForm()">Add New Todo</button>
+
+      <!-- New Todo Form (Hidden by default) -->
+      <form action="/todos" method="post" id="todoForm" class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
+        <label class="block text-gray-700 font-semibold mb-2">Todo Title:</label>
+        <input type="text" name="title" required class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
+          placeholder="Enter todo title">
+
+        <label class="block text-gray-700 font-semibold mb-2">Todo Description:</label>
+        <textarea name="description" rows="3" required
+          class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
+          placeholder="Enter description"></textarea>
+
+        <button type="submit"
+          class="w-full px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-800 transition">Add
+          Todo</button>
+      </form>
+    </div>
+
+    <!-- Recent Tasks Section -->
+    <div class="mt-8">
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Tasks:</h3>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <!-- Sample Tasks -->
+        <div class="bg-white shadow rounded-lg p-4">
+          <h4 class="font-semibold text-lg text-gray-800">Project Update</h4>
+          <p class="mt-2 text-gray-600">Just completed a major update on my latest project! Excited to share it with
+            everyone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript for Toggling Forms -->
+  <script>
+    function toggleTodoForm() {
+      const todoForm = document.getElementById('todoForm');
+      todoForm.classList.toggle('hidden');
+    }
+
+    function toggleEditProfileForm() {
+      const editProfileForm = document.getElementById('editProfileForm');
+      editProfileForm.classList.toggle('hidden');
+    }
+
+    function toggleChangeProfilePicForm() {
+      const changeProfilePicForm = document.getElementById('changeProfilePicForm');
+      changeProfilePicForm.classList.toggle('hidden');
+    }
+  </script>
+</body>
+
+</html>
