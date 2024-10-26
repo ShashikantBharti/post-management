@@ -17,8 +17,8 @@
     <div class="bg-zinc-800 shadow-md rounded-lg p-6">
       <div class="flex items-center space-x-6">
         <!-- Profile Picture -->
-        <img src="https://img.freepik.com/free-vector/blue-circle-with-white-user_78370-4707.jpg" alt="Profile Picture"
-          class="w-24 h-24 rounded-full" id="profilePicture">
+        <img src="/images/<%= user.avatar %>" alt="Profile Picture"
+          class="w-24 h-24 rounded-full object-cover border border-4" id="profilePicture">
 
         <!-- User Details -->
         <div>
@@ -61,7 +61,7 @@
 
         <label class="block text-gray-700 font-semibold mb-2">About Me:</label>
         <textarea name="about" rows="3" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
-          placeholder="Tell something about yourself">Web Developer & Designer with a passion for building user-centric solutions.</textarea>
+          placeholder="Tell something about yourself"><%= user.about  %></textarea>
 
         <button type="submit"
           class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Save
@@ -69,10 +69,10 @@
       </form>
 
       <!-- Change Profile Picture Form (Hidden by default) -->
-      <form action="/change-profile-picture" method="post" enctype="multipart/form-data" id="changeProfilePicForm"
+      <form action="/uploadAvatar/<%= user._id %>" method="post" enctype="multipart/form-data" id="changeProfilePicForm"
         class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
         <label class="block text-gray-700 font-semibold mb-2">Upload New Profile Picture:</label>
-        <input type="file" name="profilePicture" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 text-white">
+        <input type="file" name="avatar" class="w-full p-2 bg-zinc-900 rounded-lg mb-4 text-white">
 
         <button type="submit"
           class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Update
@@ -83,33 +83,33 @@
     <!-- New Todo Button and Form -->
     <div class="mt-6">
       <button id="newTodoBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition"
-        onclick="toggleTodoForm()">Add New Todo</button>
+        onclick="toggleTodoForm()">Add New Post</button>
 
       <!-- New Todo Form (Hidden by default) -->
       <form action="/todos" method="post" id="todoForm" class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
-        <label class="block text-gray-700 font-semibold mb-2">Todo Title:</label>
+        <label class="block text-gray-700 font-semibold mb-2">Post Title:</label>
         <input type="text" name="title" required class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
-          placeholder="Enter todo title">
+          placeholder="Enter post title">
 
-        <label class="block text-gray-700 font-semibold mb-2">Todo Description:</label>
+        <label class="block text-gray-700 font-semibold mb-2">Post Description:</label>
         <textarea name="description" rows="3" required
           class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
           placeholder="Enter description"></textarea>
 
         <button type="submit"
-          class="w-full px-4 py-2 bg-green-600 text-white rounded-lg shadow hover:bg-green-800 transition">Add
+          class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Add
           Todo</button>
       </form>
     </div>
 
     <!-- Recent Tasks Section -->
     <div class="mt-8">
-      <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Tasks:</h3>
+      <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts:</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
         <!-- Sample Tasks -->
-        <div class="bg-white shadow rounded-lg p-4">
-          <h4 class="font-semibold text-lg text-gray-800">Project Update</h4>
-          <p class="mt-2 text-gray-600">Just completed a major update on my latest project! Excited to share it with
+        <div class="bg-zinc-800 shadow rounded-lg p-4">
+          <h4 class="font-semibold text-lg text-gray-200">Project Update</h4>
+          <p class="mt-2 text-zinc-400">Just completed a major update on my latest project! Excited to share it with
             everyone.</p>
         </div>
       </div>

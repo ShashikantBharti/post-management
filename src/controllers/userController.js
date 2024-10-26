@@ -1,5 +1,9 @@
 import User from '../models/userModel.js';
 import jwt from 'jsonwebtoken';
+import mongoose from 'mongoose';
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
 
 export const registerPage = (req, res) => {
   res.render('index');
@@ -41,7 +45,7 @@ export const login = async (req, res) => {
   // Check if user is registered
   const user = await User.findOne({ email });
   if (!user) {
-    res.render('index', { message: 'User not found! Please register' });
+    return res.render('index', { message: 'User not found! Please register' });
   }
 
   // Verify password
@@ -85,7 +89,7 @@ export const profile = async (req, res) => {
 
 export const logout = async (req, res) => {
   res.clearCookie('token', '');
-  res.render('index');
+  res.redirect('/');
 };
 
 export const update = async (req, res) => {
@@ -106,8 +110,66 @@ export const update = async (req, res) => {
       new: true,
       runValidators: false,
     });
-    console.log(updatedUser);
+
     res.redirect(`/profile/${id}`);
+  } catch (error) {
+    console.log(error.message);
+  }
+};
+
+export const uploadAvatar = async (req, res) => {
+  try {
+    // Get id
+    const userId = req.params.userId;
+
+    // Check if user id is alid
+    if (!mongoose.Types.ObjectId.isValid(userId)) {
+      res.render(`profile/${userId}`, { message: 'User Id is not valid!' });
+    }
+
+    // Check if file is uploaded or not
+    if (!req.file) {
+      res.render(`profile/${userId}`, { message: 'Please upload a file!' });
+    }
+
+    // Get file info
+    const { filename } = req.file;
+
+    //  Delete old uploaded file
+    const user = await User.findById(userId);
+
+    if (user.avatar && user.avatar !== 'user.jpg') {
+      // set __dirname
+      const __dirname = path.dirname(fileURLToPath(import.meta.url));
+
+      // Get old iamge path
+      const oldAvatarPath = path.join(
+        __dirname,
+        '../../public/images/',
+        user.avatar
+      );
+
+      fs.unlink(oldAvatarPath, (err) => {
+        if (err) {
+          console.log(err.message);
+        }
+      });
+    }
+
+    // Check if file is uploaded or not
+    if (!user) {
+      res.render(`profile/${userId}`, { message: 'User Not Found!' });
+    }
+
+    // save file name to database
+    const updatedUser = await User.findByIdAndUpdate(
+      userId,
+      { avatar: filename },
+      { new: true, runValidators: false }
+    );
+
+    // redirect
+    res.redirect(`/profile/${userId}`);
   } catch (error) {
     console.log(error.message);
   }
