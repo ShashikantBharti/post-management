@@ -76,7 +76,10 @@ export const profile = async (req, res) => {
     const userId = req.params.userId;
 
     // Get user details
-    const user = await User.findById(userId).select('-password');
+    const user = await User.findById(userId)
+      .select('-password')
+      .populate('posts');
+
     // Check if id is correct
     if (!user) {
       res.render('404');

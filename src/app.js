@@ -4,6 +4,8 @@ import path from 'path';
 import cookieParser from 'cookie-parser';
 import { fileURLToPath } from 'url';
 import userRoutes from './routes/userRoutes.js';
+import postRoutes from './routes/postRoutes.js';
+import { isLoggedIn } from './middleware/authMiddleware.js';
 
 dotenv.config();
 const app = express();
@@ -23,6 +25,7 @@ app.use(express.static(path.join(__dirname, '../public')));
 app.use(cookieParser());
 
 app.use('/', userRoutes);
+app.use('/post', isLoggedIn, postRoutes);
 
 app.use((req, res, next) => {
   res.render('404');

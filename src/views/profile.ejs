@@ -5,8 +5,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>
-    <%= user.name %> Profile
+    <%= user.name %> | Profile
   </title>
+  <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
   <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -80,13 +81,13 @@
       </form>
     </div>
 
-    <!-- New Todo Button and Form -->
+    <!-- New Post Button and Form -->
     <div class="mt-6">
-      <button id="newTodoBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition"
-        onclick="toggleTodoForm()">Add New Post</button>
+      <button id="newPostBtn" class="px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition"
+        onclick="togglePostForm()">Add New Post</button>
 
-      <!-- New Todo Form (Hidden by default) -->
-      <form action="/todos" method="post" id="todoForm" class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
+      <!-- New Post Form (Hidden by default) -->
+      <form action="/post" method="post" id="postForm" class="mt-4 hidden bg-zinc-800 shadow-md rounded-lg p-4">
         <label class="block text-gray-700 font-semibold mb-2">Post Title:</label>
         <input type="text" name="title" required class="w-full p-2 bg-zinc-900 rounded-lg mb-4 outline-none text-white"
           placeholder="Enter post title">
@@ -98,29 +99,50 @@
 
         <button type="submit"
           class="w-full px-4 py-2 bg-blue-600 text-white rounded-lg shadow hover:bg-blue-800 transition">Add
-          Todo</button>
+          Post</button>
       </form>
     </div>
 
-    <!-- Recent Tasks Section -->
+    <!-- Recent Post Section -->
     <div class="mt-8">
       <h3 class="text-xl font-semibold text-gray-800 mb-4">Recent Posts:</h3>
       <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        <!-- Sample Tasks -->
-        <div class="bg-zinc-800 shadow rounded-lg p-4">
-          <h4 class="font-semibold text-lg text-gray-200">Project Update</h4>
-          <p class="mt-2 text-zinc-400">Just completed a major update on my latest project! Excited to share it with
-            everyone.</p>
-        </div>
+        <!-- Sample Post -->
+        <% if(user.posts.length===0) { %>
+          <h3 class="text-xl text-zinc-500">No Post Yet!</h3>
+          <% } %>
+            <% user.posts.reverse().forEach(post=> { %>
+              <div class="bg-zinc-800 shadow rounded-lg p-4">
+                <h4 class="font-semibold text-lg text-gray-200">
+                  <%= post.title %>
+                </h4>
+                <p class="mt-2 text-zinc-400">
+                  <%= post.description %>
+                </p>
+                <div class="actions text-zinc-400 mt-5 flex gap-5 text-2xl items-center">
+                  <a href="/post/like" title="Like" class="flex flex-col gap-1 items-center">
+                    <i class='bx bx-heart'></i> <span class="text-xs">2 Likes</span>
+                  </a>
+                  <a href="/post/comment" title="Comment" class="flex flex-col gap-1 items-center">
+                    <i class='bx bxs-comment-detail'></i>
+                    <span class="text-xs">2 Comments</span>
+                  </a>
+                  <a href="/post/edit" title="Edit Post">
+                    <i class='bx bxs-pencil'></i>
+                  </a>
+                </div>
+
+              </div>
+              <% }) %>
       </div>
     </div>
   </div>
 
   <!-- JavaScript for Toggling Forms -->
   <script>
-    function toggleTodoForm() {
-      const todoForm = document.getElementById('todoForm');
-      todoForm.classList.toggle('hidden');
+    function togglePostForm() {
+      const postForm = document.getElementById('postForm');
+      postForm.classList.toggle('hidden');
     }
 
     function toggleEditProfileForm() {
